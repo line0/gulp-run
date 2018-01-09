@@ -178,7 +178,9 @@ Command.prototype.exec = function exec(stdin, callback) {
   stdout.contents = subShell.stdout.pipe(new stream.PassThrough());
 
   // finally, write the input to the process's stdin.
-  stdin.pipe(subShell.stdin);
+  if (stdin.isStream()) {
+    file.contents = stdin.contents.pipe(subShell.stdin);
+  }
 
   return stdout;
 };
